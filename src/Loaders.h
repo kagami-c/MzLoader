@@ -3,6 +3,7 @@
 #include "MzLoader.h"
 #include "Decode.h"
 #include <queue>
+#include <cstring>
 
 // solve naming conflict between rapidxml and zlib by adding a macro
 #define alloc_func rapidxml_alloc_func
@@ -98,8 +99,8 @@ private:
         bool set_base_peak_mz = false;
         bool set_base_peak_intensity = false;
         bool set_total_ion_current = false;
-        for (auto param_node = spectrum_node->first_node("cvParam"); 
-                param_node && NodeNameIs(param_node, "cvParam"); 
+        for (auto param_node = spectrum_node->first_node("cvParam");
+                param_node && NodeNameIs(param_node, "cvParam");
                 param_node = param_node->next_sibling()) {
             auto name_attr = param_node->first_attribute("name");
             auto field_value = GetAttrValue(param_node->first_attribute("value"));
@@ -266,8 +267,8 @@ private:
         if (untreated_scan_nodes_.empty()) { return nullptr; }
         auto next_scan_node = untreated_scan_nodes_.front();
         untreated_scan_nodes_.pop();
-        for (auto child_scan_node = next_scan_node->first_node("scan"); 
-                child_scan_node && NodeNameIs(child_scan_node, "scan"); 
+        for (auto child_scan_node = next_scan_node->first_node("scan");
+                child_scan_node && NodeNameIs(child_scan_node, "scan");
                 child_scan_node = child_scan_node->next_sibling()) {
             untreated_scan_nodes_.push(child_scan_node);
         }
@@ -281,7 +282,7 @@ private:
         auto base_peak_mz_attr = scan_node->first_attribute("basePeakMz");
         auto base_peak_intensity_attr = scan_node->first_attribute("basePeakIntensity");
         auto total_ion_current_attr = scan_node->first_attribute("totIonCurrent");
-        if (scan_num_attr == nullptr || ms_level_attr == nullptr || base_peak_mz_attr == nullptr 
+        if (scan_num_attr == nullptr || ms_level_attr == nullptr || base_peak_mz_attr == nullptr
                 || base_peak_intensity_attr == nullptr || total_ion_current_attr == nullptr) {
             return false;
         }
@@ -323,7 +324,7 @@ private:
         else {  // data error
             return false;
         }
-        
+
         auto raw_data = peaks_node->value();
         auto raw_data_size = peaks_node->value_size();
         auto decoded_data = DecodeMzData(raw_data, raw_data_size, precision, is_compressed, false);  // big endian

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(MzLoader CXX)
+project(MzLoader CXX C)
 
 # global include directories
 include_directories(include/
@@ -51,13 +51,18 @@ set(ZLIB_SRCS
 # set_target_properties(zlibstatic PROPERTIES LINKER_LANGUAGE C)
 
 # build libb64
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+if(MSVC)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+endif()
 
 set(LIBB64_SRC 3rdparty/libb64-1.2.1/src/cdecode 3rdparty/libb64-1.2.1/src/cencode)
 # add_library(libb64 STATIC ${LIBB64_SRC})
 
 # build MzLoader
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+endif()
 add_library(mzloader STATIC src/MzLoader.cpp ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS} ${LIBB64_SRC})
 # target_link_libraries(mzloader PUBLIC libb64 zlibstatic)
 
@@ -66,5 +71,7 @@ add_subdirectory(3rdparty/googletest-release-1.7.0)
 add_executable(unittest test/Test_MzLoader.cpp)
 target_link_libraries(unittest gtest gtest_main mzloader)
 
-set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:MSVCRTD")
-set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /NODEFAULTLIB:MSVCRT")
+if(MSVC)
+  set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:MSVCRTD")
+  set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /NODEFAULTLIB:MSVCRT")
+endif()

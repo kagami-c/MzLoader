@@ -14,7 +14,7 @@ public:
             filetype_ = Filetype::mzXML;
         }
         else {
-            throw std::exception("File format is not supported.");
+            throw std::runtime_error("File format is not supported.");
         }
         switch (filetype_) {
         case Filetype::mzML:
