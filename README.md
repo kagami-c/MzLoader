@@ -1,17 +1,18 @@
 # MzLoader
 
-A fast and lightweight mass spectrometry data importing library.
+An extremely fast and lightweight mass spectrometry data importing library.
 
-MzLoader is specific designed for ms2 data importing. Thus some fields in mass spectra
-will not be extracted and some spectra will be skipped in order to accelerating the
-loading speed.
+MzLoader is specific designed for importing ms2 data. Therefore, some fields in
+mass spectra will not be extracted and some spectra will be skipped so as to
+accelerating the loading speed.
 
-Makefile is written for MSVC and Clang. Please feel free to make adjustments on it.
+Makefile is written for MSVC and Clang. Please feel free to make adjustments on
+it.
 
 ## Usage
 
-The basic usage is available in test/ folder. To run unittest, please change the directory
-to test/ folder first.
+The basic usage is available in test/ folder. To run unittest, please change
+the directory to test/ folder first.
 
 ## Dependencies
 

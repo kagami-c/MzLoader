@@ -209,7 +209,7 @@ private:
         if (set_mz_list && set_intensity_list) {
             if (mz_list.size() != intensity_list.size()) { return false; }  // data error, should be the same size
             else {  // build peaks and return
-                vector<pair<double, double>> peaks(mz_list.size());
+                vector< pair<double, double> > peaks(mz_list.size());
                 for (auto i = 0; i < mz_list.size(); ++i) {
                     peaks[i] = std::make_pair(mz_list[i], intensity_list[i]);
                 }
@@ -330,7 +330,7 @@ private:
         auto decoded_data = DecodeMzData(raw_data, raw_data_size, precision, is_compressed, false);  // big endian
         auto vector_size = decoded_data.size() / 2;
         assert(vector_size * 2 == decoded_data.size());
-        vector<std::pair<double, double>> peaks(vector_size);
+        vector< std::pair<double, double> > peaks(vector_size);
         for (auto i = 0; i < vector_size; ++i) {
             peaks[i] = std::make_pair(decoded_data[2 * i], decoded_data[2 * i + 1]);
         }
